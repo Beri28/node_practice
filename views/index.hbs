@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do</title>
+</head>
+<body>
+    <div>
+       <p style="font-weight: bold; margin:auto;">The beautiful todo list</p> 
+       <fieldset class="fieldset">
+        <legend class="legend">Todo</legend>
+        <form action="/addTask" method="post">
+        <input type="text" name="taskName"><input type="submit" value="Add">
+        </form>  <br>
+        <form action="/getAll" method="get">
+        <input type="submit" value="Get All Tasks">
+        </form> <br>
+        <form action="/update" method="post">
+        <label>Find: <input type="text" name="old"></label><label>Update to: <input type="text" name="newOne"></label><input type="submit" value="Update">
+        </form><br>
+        <form action="/delete" method="post">
+        <label>Enter task to be deleted: <input type="text" name="toBeDeleted"></label><input type="submit" value="Delete">
+        </form>
+        <div>
+            <p>{{all}}</p>
+            <p>{{task2}}</p>
+            <p>{{task}} 
+            <p>{{Deleted}}</p>
+        </div>
+       </fieldset>
+    </div>
+</body>
+</html>
