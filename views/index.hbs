@@ -24,7 +24,10 @@
         <label>Enter task to be deleted: <input type="text" name="toBeDeleted"></label><input type="submit" value="Delete">
         </form>
         <div>
-            <p>{{all}}</p>
+            {{all}}
+            {{#each all}}
+            <p>{{this.taskName}}</p>
+            {{/each}}
             <p>{{task2}}</p>
             <p>{{task}} 
             <p>{{Deleted}}</p>

@@ -26,6 +26,7 @@ const addTask=async (req,res,next)=>{
 
 const getAll=async (req,res,next)=>{
     let All;
+    let Arrays=[];
     try {
         All=await newTask.find({},{_id:0,__v:0})//.toString();
     } catch (error) {
@@ -35,9 +36,12 @@ const getAll=async (req,res,next)=>{
         res.send("No task were found")
     }
     else {
-       // res.send(All)
-        res.render('index',{all:All.toString()});
-       
+        for(let i=0;i<All.length;i++){
+            Arrays.push(All[i].taskName);
+        }
+        let names=Arrays.toString();
+        res.render('index',{all:names.split(',')});
+      
     }
 }
 
@@ -62,21 +66,35 @@ const updateTask=async (req,res,next)=>{
 const Delete=async (req,res,next)=>{
     let {toBeDeleted}=req.body;
     try {
-       //let data=
-        await (await newTask.findOne({taskName:toBeDeleted},{_id:0,__v:0})).delete({taskName:toBeDeleted})
-       console.log(data)
-       //await newTask.delete({taskName:data})
+       let found=  await newTask.findOne({taskName:toBeDeleted}).then( async()=>{
+        await newTask.deleteOne({taskName:toBeDeleted}).then(()=>{
+            res.render('index',{Deleted:"Deleted"})
+        }).catch(()=>{res.render('index',{Deleted:'Couldnt find task'})})
+       }).catch(()=>{res.render('index',{Deleted:'Couldnt find task'})})
       
-    } catch (error) {
+            /*if(!found){
+                res.send("Couldn't find task")
+             }
+             else{
+                newTask.deleteOne({taskName:toBeDeleted}).then(()=>{
+                    res.send("Deleted")
+             })}*/
+            }
+     catch (error) {
        //return res.send(error)
         return res.render('index',{Deleted:`Couldn't be deleted`})
     }
-    if(!data){
-        res.render('index',{Deleted:'The task doesnt exit'})
+}
+
+const DeleteTask=async (req,res,next)=>{
+    try {
+        await newTask.deleteMany({taskName:req.head.id}).then(()=>{
+            res.send("succesfully deleted")
+        }
+        )
+    } catch (error) {
+        return res.send(error)
     }
- else {
- return res.render('index',{Deleted:`${toBeDeleted} task was succesfully deleted`})
- }
 }
 
 
@@ -85,3 +103,5 @@ exports.addTask=addTask;
 exports.getAll=getAll;
 exports.updateTask=updateTask;
 exports.Delete=Delete;
+exports.DeleteTask=DeleteTask;
+
